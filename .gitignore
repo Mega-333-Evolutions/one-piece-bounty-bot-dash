@@ -1,0 +1,17 @@
+# Default ignored files
+/shelf/
+/.idea/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+/.idea/
+/out/
+/one-piece-deluxe-tools.iml
+*.pyc
+/.streamlit/secrets.toml
+
+# Telethon session file(s) for the TG Rest Bot - contains authorization data
+/data/
