@@ -8,8 +8,8 @@ import resources.Environment as Env
 from resources.Auth import require_password
 
 st.set_page_config(
-    page_title="One Piece Deluxe Tools",
-    page_icon="👋",
+    page_title="One Piece Bounty Bot Tools",
+    page_icon="🏴‍☠️",
 )
 
 require_password()
