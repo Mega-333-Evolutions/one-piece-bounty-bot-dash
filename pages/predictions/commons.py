@@ -25,7 +25,7 @@ def get_add_form_optionals(key_suffix: str, prediction: Prediction = None, predi
     is_sent = prediction is not None and prediction_status >= PredictionStatus.SENT
     is_closed = prediction is not None and prediction_status >= PredictionStatus.BETS_CLOSED
 
-    options_count = st.slider('How many options', 2, 10, key=f"options_count{key_suffix}",
+    options_count = st.slider('How many options', 2, 12, key=f"options_count{key_suffix}",
                               value=(2 if prediction_options is None else len(prediction_options)),
                               disabled=is_sent)
 
@@ -75,6 +75,12 @@ def get_add_form(options_count: int, should_send: bool, should_end: bool, should
 
     # Type
     prediction_types = [p.value for p in PredictionType]
+    # A prediction saved in the DB may have a type value that is no longer part of the enum
+    # (e.g. legacy data or a type only known to the bot). Append it so the selectbox doesn't crash
+    # and the existing value is still shown/preserved instead of being silently reset.
+    if prediction is not None and prediction.type not in prediction_types:
+        prediction_types.append(prediction.type)
+
     st.selectbox("Prediction Type", prediction_types, key=f"prediction_type{key_suffix}",
                  index=(0 if prediction is None else prediction_types.index(prediction.type)), disabled=is_sent)
 
