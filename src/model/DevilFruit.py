@@ -41,11 +41,17 @@ class DevilFruit(BaseModel):
 
     def get_status_description(self) -> str:
         """
-        Get fruit status description
+        Get fruit status description. If the fruit has been collected or eaten, includes who did it.
         :return: Fruit status description
         """
 
-        return DevilFruitStatus(self.status).get_description()
+        status = DevilFruitStatus(self.status)
+        description = status.get_description()
+
+        if status in (DevilFruitStatus.COLLECTED, DevilFruitStatus.EATEN) and self.owner is not None:
+            description += " by " + self.owner.get_display_name(add_user_id=True)
+
+        return description
 
 
 DevilFruit.create_table()
