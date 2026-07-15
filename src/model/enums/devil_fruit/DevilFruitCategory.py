@@ -47,6 +47,16 @@ class DevilFruitCategory(IntEnum):
                 DevilFruitCategory.MYTHICAL_ZOAN.get_description(),
                 DevilFruitCategory.SMILE.get_description()]
 
+    @staticmethod
+    def get_filter_list() -> list['DevilFruitCategory']:
+        """
+        Get the list of devil fruit categories that should be selectable in list filters.
+        SMILE is excluded and should never appear in, or be returned by, any devil fruit list filter.
+        :return: List of devil fruit categories allowed in filters
+        """
+
+        return [DevilFruitCategory.ZOAN, DevilFruitCategory.ANCIENT_ZOAN, DevilFruitCategory.MYTHICAL_ZOAN]
+
     def get_index(self) -> int:
         """
         Get the index of the devil fruit category
