@@ -23,30 +23,32 @@ def main() -> None:
 
     key_suffix = "_list"
 
-    # Filter by status multiselect
-    default_status = [DevilFruitStatus.NEW, DevilFruitStatus.COMPLETED, DevilFruitStatus.ENABLED]
-    status_filter: list[str] = st.multiselect("Status filter", DevilFruitStatus.get_all_description(),
-                                              [status.get_description() for status in default_status])
+    # Filter by status multiselect - nothing selected by default, i.e. no status filter is applied (all statuses shown)
+    status_filter: list[str] = st.multiselect("Status filter", DevilFruitStatus.get_all_description(), [])
 
     selected_statuses = [DevilFruitStatus.get_by_description(status_str) for status_str in status_filter]
 
-    # Filter by category multiselect - SMILE is never a selectable option and can't appear in results
-    filterable_categories = DevilFruitCategory.get_filter_list()
+    # Filter by category multiselect - SMILE is a valid option but is not selected by default
+    default_categories = DevilFruitCategory.get_default_filter_list()
     category_filter: list[str] = st.multiselect(
-        "Category filter", [category.get_description() for category in filterable_categories],
-        [category.get_description() for category in filterable_categories])
+        "Category filter", DevilFruitCategory.get_all_description(),
+        [category.get_description() for category in default_categories])
 
     selected_categories = [DevilFruitCategory.get_by_description(category_str) for category_str in category_filter]
 
     # Filter by name text input
     name_filter = st.text_input("Name filter", "")
 
+    # Build the where clause - an empty status selection means "no filter", i.e. every status is shown
+    where_clause = ((DevilFruit.category.in_(selected_categories))
+                    & ((DevilFruit.name.contains(name_filter)) | (DevilFruit.model.contains(name_filter))))
+
+    if len(selected_statuses) > 0:
+        where_clause &= DevilFruit.status.in_(selected_statuses)
+
     # Get fruits
     devil_fruits: list[DevilFruit] = (DevilFruit.select()
-                                      .where((DevilFruit.status.in_(selected_statuses))
-                                             & (DevilFruit.category.in_(selected_categories))
-                                             & ((DevilFruit.name.contains(name_filter))
-                                                | (DevilFruit.model.contains(name_filter))))
+                                      .where(where_clause)
                                       .order_by(DevilFruit.id.desc())
                                       .limit(Env.MAX_ITEMS_DISPLAYED_LIST.get_int()))
 
