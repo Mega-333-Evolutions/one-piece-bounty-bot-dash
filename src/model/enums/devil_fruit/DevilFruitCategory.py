@@ -48,11 +48,11 @@ class DevilFruitCategory(IntEnum):
                 DevilFruitCategory.SMILE.get_description()]
 
     @staticmethod
-    def get_filter_list() -> list['DevilFruitCategory']:
+    def get_default_filter_list() -> list['DevilFruitCategory']:
         """
-        Get the list of devil fruit categories that should be selectable in list filters.
-        SMILE is excluded and should never appear in, or be returned by, any devil fruit list filter.
-        :return: List of devil fruit categories allowed in filters
+        Get the devil fruit categories that should be selected by default in list filters.
+        SMILE is a valid filter option but should not be applied by default like the Zoan categories are.
+        :return: List of devil fruit categories selected by default in filters
         """
 
         return [DevilFruitCategory.ZOAN, DevilFruitCategory.ANCIENT_ZOAN, DevilFruitCategory.MYTHICAL_ZOAN]
