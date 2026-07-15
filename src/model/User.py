@@ -96,8 +96,8 @@ class User(BaseModel):
         :return: User display name
         """
         return "{}{}{}{}".format(self.tg_first_name,
-                                 " " + self.tg_last_name if self.tg_last_name is not None else "",
-                                 " (@" + self.tg_username + ")" if self.tg_username is not None else "",
+                                 " " + self.tg_last_name if self.tg_last_name else "",
+                                 " (@" + self.tg_username + ")" if self.tg_username else "",
                                  " - " + self.tg_user_id if add_user_id else "")
 
     @staticmethod
