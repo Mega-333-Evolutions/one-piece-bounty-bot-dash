@@ -164,11 +164,11 @@ DB_PASSWORD = Environment('DB_PASSWORD')
 DB_LOG_QUERIES = Environment('DB_LOG_QUERIES', default_value='False')
 
 # Should refund wagers default option. Default: False
-REFUND_WAGER_DEFAULT = Environment('REFUND_WAGER_DEFAULT', default_value='False')
+REFUND_WAGER_DEFAULT = Environment('REFUND_WAGER_DEFAULT', default_value='True')
 # Should allow users to bet on multiple choices default option. Default: True
-ALLOW_MULTIPLE_CHOICES_DEFAULT = Environment('ALLOW_MULTIPLE_CHOICES_DEFAULT', default_value='True')
+ALLOW_MULTIPLE_CHOICES_DEFAULT = Environment('ALLOW_MULTIPLE_CHOICES_DEFAULT', default_value='False')
 # Should allow users to withdraw their bet default option. Default: False
-CAN_WITHDRAW_BET_DEFAULT = Environment('CAN_WITHDRAW_BET_DEFAULT', default_value='False')
+CAN_WITHDRAW_BET_DEFAULT = Environment('CAN_WITHDRAW_BET_DEFAULT', default_value='True')
 # Maximum refundable wager for prediction bets. Default: 100 million
 PREDICTION_BET_MAX_REFUNDABLE_WAGER = Environment('PREDICTION_BET_MAX_REFUNDABLE_WAGER', default_value='100000000')
 
@@ -183,8 +183,8 @@ DEVIL_FRUIT_CATEGORY_ANCIENT_ZOAN_SUM = Environment('DEVIL_FRUIT_CATEGORY_ANCIEN
 # Devil Fruit Mythical Zoan abilities sum. Default: 300
 DEVIL_FRUIT_CATEGORY_MYTHICAL_ZOAN_SUM = Environment('DEVIL_FRUIT_CATEGORY_MYTHICAL_ZOAN_SUM', default_value='300')
 
-# Maximum items displayed in a list. Default: 10
-MAX_ITEMS_DISPLAYED_LIST = Environment('MAX_ITEMS_DISPLAYED_LIST', default_value='5')
+# Maximum items displayed in a list. Default: 20
+MAX_ITEMS_DISPLAYED_LIST = Environment('MAX_ITEMS_DISPLAYED_LIST', default_value='20')
 
 # Maximum number of Warlords. Default: 7
 MAX_WARLORDS = Environment('MAX_WARLORDS', default_value='7')
