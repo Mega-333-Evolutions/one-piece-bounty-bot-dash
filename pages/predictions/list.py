@@ -5,6 +5,7 @@ from src.model.Prediction import Prediction
 from src.model.PredictionOption import PredictionOption
 from src.model.enums.PredictionStatus import PredictionStatus, get_all_prediction_status_names, \
     get_active_prediction_status_names, get_prediction_status_by_list_of_names, get_prediction_status_name_by_key
+from src.model.enums.PredictionType import get_all_prediction_type_names
 from src.model.tgrest.TgRestPrediction import TgRestPrediction, TgRestPredictionAction
 from src.service.form_service import get_session_state_key
 from src.service.tg_rest_service import send_tg_rest
@@ -23,11 +24,17 @@ def main() -> None:
                                    default=get_active_prediction_status_names())
     selected_statuses = get_prediction_status_by_list_of_names(status_filter)
 
+    # Filter by type multiselect - only the known types are ever offered/applied by default, so a prediction
+    # with an unrecognized type (e.g. "User") can never be selected as a filter and never shows up in the list
+    type_filter: list[str] = st.multiselect("Type filter", get_all_prediction_type_names(),
+                                            default=get_all_prediction_type_names())
+
     # Filter by name text input
     question_filter = st.text_input("Question filter", "")
 
     # Get predictions
     predictions = Prediction.select().where((Prediction.status.in_(selected_statuses))
+                                            & (Prediction.type.in_(type_filter))
                                             & (Prediction.question.contains(question_filter)))
 
     for index, prediction in enumerate(predictions):
