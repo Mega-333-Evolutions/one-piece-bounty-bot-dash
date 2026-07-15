@@ -8,6 +8,7 @@ from src.model.DevilFruitAbility import DevilFruitAbility
 from src.model.DevilFruitTrade import DevilFruitTrade
 from src.model.User import User
 from src.model.enums.devil_fruit.DevilFruitAbilityType import DevilFruitAbilityType
+from src.model.enums.devil_fruit.DevilFruitCategory import DevilFruitCategory
 from src.model.enums.devil_fruit.DevilFruitStatus import DevilFruitStatus
 from src.model.tgrest.TgRestDevilFruitAward import TgRestDevilFruitAward
 from src.model.tgrest.TgRestDevilFruitForceSchedule import TgRestDevilFruitForceSchedule
@@ -29,12 +30,21 @@ def main() -> None:
 
     selected_statuses = [DevilFruitStatus.get_by_description(status_str) for status_str in status_filter]
 
+    # Filter by category multiselect - SMILE is never a selectable option and can't appear in results
+    filterable_categories = DevilFruitCategory.get_filter_list()
+    category_filter: list[str] = st.multiselect(
+        "Category filter", [category.get_description() for category in filterable_categories],
+        [category.get_description() for category in filterable_categories])
+
+    selected_categories = [DevilFruitCategory.get_by_description(category_str) for category_str in category_filter]
+
     # Filter by name text input
     name_filter = st.text_input("Name filter", "")
 
     # Get fruits
     devil_fruits: list[DevilFruit] = (DevilFruit.select()
                                       .where((DevilFruit.status.in_(selected_statuses))
+                                             & (DevilFruit.category.in_(selected_categories))
                                              & ((DevilFruit.name.contains(name_filter))
                                                 | (DevilFruit.model.contains(name_filter))))
                                       .order_by(DevilFruit.id.desc())
